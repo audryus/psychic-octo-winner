@@ -28,8 +28,14 @@ public class DocumentoService {
 	
 	@CacheEvict(allEntries = true, 
 			value = {"documentos_beneficiario"})
-	public List<Documento> create(List<Documento> docs) {
+	public List<Documento> saveAll(List<Documento> docs) {
 		return repo.saveAll(docs);
+	}
+	
+	@CacheEvict(allEntries = true, 
+			value = {"documentos_beneficiario"})
+	public void deleteAll(List<Documento> docs) {
+		repo.deleteAll(docs);
 	}
 
 }

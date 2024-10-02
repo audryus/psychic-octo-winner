@@ -1,5 +1,6 @@
 package avaliacao.ekan.usecase;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,24 +14,57 @@ import avaliacao.ekan.domain.beneficiario.Beneficiario;
 import avaliacao.ekan.domain.beneficiario.BeneficiarioService;
 import avaliacao.ekan.domain.beneficiario.documento.Documento;
 import avaliacao.ekan.domain.beneficiario.documento.DocumentoService;
+import avaliacao.ekan.exceptions.BeneficiarioNaoEncontradoExcpetion;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CreateBeneficiarioUC {
+public class UpdateBeneficiarioUC {
 	
 	private final BeneficiarioService beneficiarioService;
 	private final DocumentoService documentoService;
 	
 	@Transactional
-	public BeneficiarioVO create(RequestBeneficiarioVO req) {
-		var beneficiario = beneficiarioService.save(
-				getBeneficiario(req));
+	public BeneficiarioVO update(
+			Long beneficiario, 
+			RequestBeneficiarioVO req) {
+		var benefi = beneficiarioService.getById(beneficiario)
+				.orElseThrow(BeneficiarioNaoEncontradoExcpetion::new);
 		
-		var documentos = getDocumentos(beneficiario, req);
-		documentoService.saveAll(documentos);
+		atualizaBeneficiario(benefi, req);
 		
-		return generateResponse(beneficiario, documentos);
+		var docs = atualizaDocumentos(
+				beneficiario, 
+				req.documentos());
+		
+		beneficiarioService.save(benefi);
+		
+		return generateResponse(benefi, docs);
+	}
+
+	private void atualizaBeneficiario(
+			Beneficiario benefi, 
+			RequestBeneficiarioVO req) {
+		benefi.setNome(req.nome());
+		benefi.setDataAtualizacao(LocalDateTime.now());
+		benefi.setDataNascimento(req.dataNascimento());
+		benefi.setTelefone(req.telefone());
+	}
+
+	private List<Documento> atualizaDocumentos(
+			Long beneficiario,
+			List<RequestDocumentoVO> documentos) {
+		return documentoService.saveAll(
+			documentos.stream()
+			.map(d -> Documento.builder()
+					.id(d.id())
+					.beneficiario(beneficiario)
+					.dataAtualizacao(LocalDateTime.now())
+					.dataInclusao(LocalDateTime.now())
+					.descricao(d.descricao())
+					.tipoDocumento(d.tipoDocumento())
+					.build())
+			.toList());
 	}
 
 	private BeneficiarioVO generateResponse(
@@ -46,36 +80,12 @@ public class CreateBeneficiarioUC {
 				.toList());
 	}
 
-	private List<Documento> getDocumentos(Beneficiario bene, RequestBeneficiarioVO req) {
-		return req.documentos()
-		.stream()
-		.map(d -> getDocumento(d, bene))
-		.toList();
-	}
-
-	private Documento getDocumento(
-			RequestDocumentoVO d, 
-			Beneficiario bene) {
-		return Documento.builder()
-				.beneficiario(bene.getId())
-				.descricao(d.descricao())
-				.tipoDocumento(d.tipoDocumento())
-				.build();
-	}
-
-	private Beneficiario getBeneficiario(RequestBeneficiarioVO req) {
-		return Beneficiario.builder()
-				.nome(req.nome())
-				.telefone(req.telefone())
-				.dataNascimento(req.dataNascimento())
-				.build();
-	}
-
 	private DocumentoVO toDocumentoVO(Documento doc) {
 		return new DocumentoVO(
 				doc.getId(), 
 				doc.getTipoDocumento(), 
 				doc.getDescricao());
 	}
+
 
 }

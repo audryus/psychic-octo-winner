@@ -21,19 +21,19 @@ public class BeneficiarioService {
 	}
 
 	@Cacheable(value = "beneficiario")
-	public Optional<Beneficiario> getByID(Long beneficiario) {
+	public Optional<Beneficiario> getById(Long beneficiario) {
 		return repo.findById(beneficiario);
 	}
 
 	@CacheEvict(allEntries = true, 
 			value = {"beneficiarios", "beneficiario"})
-	public void deleteByID(Long beneficiario) {
+	public void deleteById(Long beneficiario) {
 		repo.deleteById(beneficiario);
 	}
 	
 	@CacheEvict(allEntries = true, 
 			value = {"beneficiarios", "beneficiario"})
-	public Beneficiario create(Beneficiario bene) {
+	public Beneficiario save(Beneficiario bene) {
 		return repo.save(bene);
 	}
 	

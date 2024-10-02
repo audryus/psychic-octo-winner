@@ -16,7 +16,7 @@ public class DeleteBeneficiarioUC {
 	@Transactional
 	public void remove(Long beneficiario) {
 		documentoService.deleteAllByBeneficiario(beneficiario);
-		beneficiarioService.deleteByID(beneficiario);
+		beneficiarioService.deleteById(beneficiario);
 	}
 
 }
