@@ -30,7 +30,7 @@ public class Documento {
 
 	@Column(name = "TIPO")
 	@Enumerated(EnumType.STRING)
-	private String tipoDocumento;
+	private TipoDocumento tipoDocumento;
 	
 	@Column(name = "DESCRICAO")
 	private String descricao;
