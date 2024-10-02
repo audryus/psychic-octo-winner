@@ -1,0 +1,20 @@
+server.servlet.context-path: /api
+
+spring:
+  jpa:
+    open-in-view: false
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 200
+      minimum-idle: 40
+  liquibase:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    user: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+management.tracing.enabled: true
