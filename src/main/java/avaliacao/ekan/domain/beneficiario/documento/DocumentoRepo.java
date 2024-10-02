@@ -11,4 +11,6 @@ extends JpaRepository<Documento, Long>{
 	
 	List<Documento> findAllByBeneficiario(Long beneficiario);
 
+	void deleteAllByBeneficiario(Long beneficiario);
+
 }
