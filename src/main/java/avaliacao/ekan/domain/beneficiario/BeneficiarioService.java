@@ -26,9 +26,15 @@ public class BeneficiarioService {
 	}
 
 	@CacheEvict(allEntries = true, 
-			value = {"beneficiarios"})
+			value = {"beneficiarios", "beneficiario"})
 	public void deleteByID(Long beneficiario) {
 		repo.deleteById(beneficiario);
+	}
+	
+	@CacheEvict(allEntries = true, 
+			value = {"beneficiarios", "beneficiario"})
+	public Beneficiario create(Beneficiario bene) {
+		return repo.save(bene);
 	}
 	
 }

@@ -25,5 +25,11 @@ public class DocumentoService {
 	public void deleteAllByBeneficiario(Long beneficiario) {
 		repo.deleteAllByBeneficiario(beneficiario);
 	}
+	
+	@CacheEvict(allEntries = true, 
+			value = {"documentos_beneficiario"})
+	public List<Documento> create(List<Documento> docs) {
+		return repo.saveAll(docs);
+	}
 
 }
