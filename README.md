@@ -21,7 +21,7 @@ Durante o desenvolvimento, na IDE, foi utilizado o SonarLint.
 > docker compose up
 
 ## Swagger
-> http://localhost:8080/api/swagger-ui/index.html
+> http://localhost:8080/swagger-ui/index.html
 
 ### Erros
 Erro oriundos de regras irão retornar um JSON padrão:

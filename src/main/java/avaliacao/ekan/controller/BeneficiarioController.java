@@ -3,6 +3,7 @@ package avaliacao.ekan.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class BeneficiarioController {
 		      )
 	@ApiResponse(responseCode = "200")
 	@GetMapping
+	@PreAuthorize("hasRole('READ')")
 	public List<BeneficiarioVO> list() {
 		return getter.getAll();
 	}
@@ -55,6 +57,7 @@ public class BeneficiarioController {
 	@ApiResponse(responseCode = "201")
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
+	@PreAuthorize("hasRole('WRITE')")
 	public BeneficiarioVO create(
 			@RequestBody RequestBeneficiarioVO request) {
 		return creator.create(request);
@@ -68,6 +71,7 @@ public class BeneficiarioController {
     @ApiResponse(responseCode = "404", description = "ID informado não existe.", content = { @Content( schema = @Schema(type = "string", defaultValue = "ERR_BENEFICIARIO_NAO_EXISTE") ) })
 	@PutMapping("{beneficiario}")
 	@ResponseStatus(code = HttpStatus.ACCEPTED)
+	@PreAuthorize("hasRole('WRITE')")
 	public BeneficiarioVO update(
 			@Parameter(description = "ID do Beneficiario") @PathVariable("beneficiario") Long beneficiario,
 			@RequestBody RequestBeneficiarioVO request) {
@@ -81,6 +85,7 @@ public class BeneficiarioController {
 	@ApiResponse(responseCode = "200")
 	@DeleteMapping("{beneficiario}")
 	@ResponseStatus(code = HttpStatus.OK)
+	@PreAuthorize("hasRole('ADMIN')")
 	public void delete(
 			@Parameter(description = "ID do Beneficiario") @PathVariable("beneficiario") Long beneficiario) {
 		delete.remove(beneficiario);

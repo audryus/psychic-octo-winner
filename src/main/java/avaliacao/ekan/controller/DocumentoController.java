@@ -2,6 +2,7 @@ package avaliacao.ekan.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class DocumentoController {
 		      description = "Lista de Documentos de Beneficiario informado.")
 	@ApiResponse(responseCode = "200")
 	@GetMapping("beneficiarios/{beneficiario}/documentos")
+	@PreAuthorize("hasRole('READ')")
 	public List<DocumentoVO> listAllBeneficiario(
 			@Parameter(description = "ID do Beneficiario") @PathVariable("beneficiario") Long beneficiario) {
 		return getter.getAllByBeneficiario(beneficiario);
