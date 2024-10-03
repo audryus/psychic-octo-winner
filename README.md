@@ -14,6 +14,15 @@ domain service -> domain repo
 
 A ideia é que cada dominio possa ser separados em um "nano-serviço", pensando em `clustering`.
 
+### Qualidade
+Durante o desenvolvimento, na IDE, foi utilizado o SonarLint.
+
+## Execução
+> docker compose up
+
+## Swagger
+> http://localhost:8080/api/swagger-ui/index.html
+
 ### Erros
 Erro oriundos de regras irão retornar um JSON padrão:
 
@@ -25,9 +34,3 @@ Erro oriundos de regras irão retornar um JSON padrão:
 
 Cada "regra" pode ter um status code diferente.
 Este retorno pode ser usado pelo `client` para fazer algum tratamento adequado.
-
-### Qualidade
-Durante o desenvolvimento, na IDE, foi utilizado o SonarLint.
-
-## Execução
-> docker compose up

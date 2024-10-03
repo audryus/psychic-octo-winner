@@ -1,5 +1,7 @@
 package avaliacao.ekan.usecase;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +21,11 @@ class DeleteBeneficiarioUCTests {
 	@MockBean BeneficiarioService beneficiarioService;
 	
 	@Test void remove() {
-		// nada a testar ...
-		uc.remove(1l);
+		try {
+			uc.remove(1l);
+		} catch (Exception e) {
+			fail(e);
+		}
 	}
 	
 }
